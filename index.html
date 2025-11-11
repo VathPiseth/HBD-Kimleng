@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday, My Love 🎂💖</title>
+  <meta name="description" content="A cute interactive birthday surprise page in one file." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Noto+Sans+Khmer:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Angkor&family=Khmer&family=Moul&family=Noto+Sans+Khmer:wght@100..900&family=Suwannaphum:wght@100;300;400;700;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #0f1020;
+      /* night indigo */
+      --bg2: #151735;
+      /* deep purple */
+      --accent: #ff6ec7;
+      /* pink */
+      --accent2: #ffd166;
+      /* warm gold */
+      --soft: #e0e7ff;
+      /* soft text */
+      --card: #ffffff10;
+      /* glass */
+      --heart: #ff4d6d;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      color: var(--soft);
+      background: radial-gradient(1200px 600px at 20% 10%, #1f2255 0%, transparent 60%),
+        radial-gradient(1000px 700px at 80% 0%, #3a1c5a 0%, transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      font-family: 'Poppins', 'Noto Sans Khmer', system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: grid;
+      place-items: center;
+      min-height: 100dvh;
+      padding: 24px;
+    }
+
+    .hero {
+      position: relative;
+      width: min(980px, 100%);
+      padding: 32px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, #ffffff10, #ffffff05);
+      border: 1px solid #ffffff20;
+      box-shadow: 0 20px 60px #00000070;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .sparkle {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      filter: drop-shadow(0 0 12px #ffffff70);
+      opacity: .6
+    }
+
+    .title {
+      font-size: clamp(32px, 6vw, 64px);
+      line-height: 1.05;
+      font-weight: 800;
+      margin: 8px 0 4px;
+      letter-spacing: .5px;
+      text-shadow: 0 6px 30px #00000080;
+    }
+
+    .subtitle {
+      font-size: clamp(16px, 2.4vw, 22px);
+      opacity: .92
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff15;
+      border: 1px solid #ffffff35;
+      padding: 10px 14px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      font-size: 14px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: center;
+      margin-top: 18px
+    }
+
+    .btn {
+      cursor: pointer
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), #7a5cff);
+      border: 0;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px #00000060;
+    }
+
+    .ghost {
+      background: #ffffff10;
+      border: 1px solid #ffffff30;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: 600
+    }
+
+    .badge {
+      font-weight: 700;
+      color: var(--accent2)
+    }
+
+    .countdown {
+      margin-top: 14px;
+      font-size: clamp(18px, 3.4vw, 26px);
+      font-weight: 700
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 22px
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #ffffff1f;
+      border-radius: 22px;
+      padding: 18px;
+      backdrop-filter: blur(6px);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px
+    }
+
+    .card p {
+      margin: 0;
+      opacity: .92
+    }
+
+    .footer {
+      margin-top: 16px;
+      opacity: .7;
+      font-size: 12px
+    }
+
+    /* Floating hearts */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1
+    }
+
+    /* Surprise modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: #00000090;
+      z-index: 20
+    }
+
+    .modal.open {
+      display: grid
+    }
+
+    .modal .inner {
+      width: min(880px, 92%);
+      background: #1a1630;
+      border: 1px solid #ffffff2a;
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: 0 40px 100px #000
+    }
+
+    .modal h2 {
+      margin: 0 0 10px;
+      font-size: clamp(24px, 4.4vw, 36px)
+    }
+
+    .type {
+      min-height: 72px;
+      white-space: pre-wrap
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 14px
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1px solid #ffffff25
+    }
+
+    /* Confetti canvas */
+    #confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10
+    }
+
+    /* Small helper chip */
+    .hint {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      opacity: .75;
+      font-size: 12px;
+      background: #00000060;
+      border: 1px solid #ffffff25;
+      padding: 8px 10px;
+      border-radius: 14px
+    }
+
+    @media (max-width:520px) {
+      .hero {
+        padding: 20px;
+        border-radius: 20px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="hearts" id="hearts"></div>
+  <div class="container">
+    <section class="hero">
+      <svg class="sparkle" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <radialGradient id="g" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#fff" />
+            <stop offset="100%" stop-color="#fff0" />
+          </radialGradient>
+        </defs>
+        <circle cx="120" cy="90" r="120" fill="url(#g)" />
+        <circle cx="680" cy="40" r="100" fill="url(#g)" />
+      </svg>
+
+      <div class="pill"><span class="badge">🎂 12/11/2025</span> <span id="dateDisplay"></span></div>
+      <h1 class="title">Happy Birthday, <span id="herName">My Love</span>💖</h1>
+      <p class="subtitle" id="intro" style="font-family: 'Suwannaphum', sans-serif;font-size: 1rem;">អូនសម្លាញ់, សូមអោយថ្ងៃកំណើតនេះពេញទៅដោយសំណាងល្អ សុខភាពល្អ និងភាពសប្បាយរីករាយ
+        💫<br />May your day be as sweet as your smile.</p>
+
+      <div class="row">
+        <button class="btn primary" id="openBtn">Open ✨</button>
+        <button class="btn ghost" id="confettiBtn">Confetti 🎉</button>
+        <button class="btn ghost" id="musicBtn" aria-pressed="false">Music ▶️</button>
+      </div>
+
+      <div class="countdown" id="countdown"></div>
+
+      <div class="grid" style="margin-top:22px">
+        <div class="card">
+          <h3 style="font-family: 'Suwannaphum', sans-serif;font-size: 1.1rem;">💌 ចាំណា</h3>
+          <p id="note" style="font-family: 'Suwannaphum', sans-serif;font-size: 1rem;">រាល់ថ្ងៃមានអូនធ្វើអោយបេះដូងបងកក់ក្ដៅ ហើយវាលែងឯកោ😚. — <span id="fromName">Piseth</span>
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="font-family: 'Suwannaphum', sans-serif;font-size: 1.1rem;">🥰 ហេតុអ្វីបងស្រឡាញ់អូន</h3>
+          <p>1) បេះដូងរបស់អូន❤️ 2) ស្នាមញញឹមអូន😊 3) សម្លេងអូន☺️ 3) ភាពស្មោះត្រង់🥰 4) ឧស្សាហ៍ព្យាយាម😁 5) រឹងមាំ ក្លាហាន💪 6) ពូកែលេងសើច😹 7) ចូលចិត្តធ្វើអោយបងញញឹម😏 8) Introvert ដូចបង🙄 ✨</p>
+        </div>
+        <div class="card">
+          <h3>📸 KIMLENG</h3>
+          <div class="gallery" id="gallery">
+            <!-- Replace src with your photos or data URLs -->
+            <img src="01.png" alt="Memory 1" />
+            <img src="04.png"
+              alt="Memory 2" />
+            <img src="02.png"
+              alt="Memory 3" />
+            <img src="03.png"
+              alt="Memory 4" />
+          </div>
+        </div>
+      </div>
+
+      <!-- <p class="footer">Press <strong>E</strong> to edit text live • Add <code>?name=Lisa&from=Piseth&date=2025-09-12</code> to the URL to customize • Works offline</p> -->
+    </section>
+  </div>
+
+  <!-- Surprise Modal -->
+  <div class="modal" id="modal">
+    <div class="inner">
+      <h2>For <span id="modalName">you</span> 💝</h2>
+      <div class="type" id="typewriter" style="font-family: 'Suwannaphum', sans-serif;font-size: 1rem;"></div>
+      <div class="row">
+        <button class="btn primary" id="closeBtn">Close</button>
+        <button class="btn ghost" id="againBtn">Type again ↻</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional: put your audio file in the same folder and set src below -->
+  <audio id="song" src="hbd.mp3" preload="auto" loop>
+    <!-- Replace with your own mp3 file path. Example: <source src="song.mp3" type="audio/mpeg"/> -->
+  </audio>
+
+  <div class="hint">Tip: Click anywhere for ✨ confetti</div>
+
+  <script>
+    // -------- Simple helper: URL params (name, from, date, intro, note) --------
+    const params = new URLSearchParams(location.search);
+    const herName = params.get('name') || 'Kimleng';
+    const fromName = params.get('from') || 'Piseth';
+    const birthday = params.get('date') || ''; // YYYY-MM-DD
+    const introOverride = params.get('intro');
+    const noteOverride = params.get('note');
+
+    document.getElementById('herName').textContent = herName;
+    document.getElementById('fromName').textContent = fromName;
+    document.getElementById('modalName').textContent = herName;
+    if (introOverride) document.getElementById('intro').textContent = introOverride;
+    if (noteOverride) document.getElementById('note').textContent = noteOverride;
+
+    // -------- Countdown (if date provided) --------
+    // const cd = document.getElementById('countdown');
+    // const dateDisplay = document.getElementById('dateDisplay');
+    // if (birthday) {
+    //   const d = new Date(birthday + 'T00:00:00');
+    //   dateDisplay.textContent = `Target: ${d.toLocaleDateString()}`;
+    //   const tick = () => {
+    //     const now = new Date();
+    //     const diff = d - now;
+    //     if (diff <= 0) { cd.textContent = `🎉 Today is your day, ${herName}!`; return; }
+    //     const days = Math.floor(diff / (1000*60*60*24));
+    //     const hours = Math.floor((diff / (1000*60*60)) % 24);
+    //     const mins = Math.floor((diff / (1000*60)) % 60);
+    //     const secs = Math.floor((diff / 1000) % 60);
+    //     cd.textContent = `⏳ ${days}d ${hours}h ${mins}m ${secs}s until your birthday`;
+    //   };
+    //   tick(); setInterval(tick,1000);
+    // } else {
+    //   dateDisplay.textContent = '!';
+    // }
+
+    // -------- Modal + Typewriter --------
+    const modal = document.getElementById('modal');
+    const typeBox = document.getElementById('typewriter');
+    const openBtn = document.getElementById('openBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const againBtn = document.getElementById('againBtn');
+
+    const story = (
+      `សួស្តី អូនសម្លាញ់❤️\n\nនៅថ្ងៃពិសេសនេះ បងចង់ប្រាប់ថា អូនពិតជាសំខាន់ខ្លាំងណាស់សម្រាប់បង។\nអរគុណដែលពេលខ្លះបងធ្វើអ្វីខុស ឬធ្វើអ្វីអោយអូនមិនសប្បាយចិត្តអូនតែងអនុគ្រោះ😌 អរគុណនូវសេចក្ដីស្រឡាញចំពោះបង❤️ និងតែងតែផ្ដល់ស្នាមញញឹមដល់បង😊។\nសូមអោយបំណងប្រាថ្នារបស់អូនទាំងប៉ុន្មានឆាប់ក្លាយជាការពិត ធ្វើអ្វីសម្រេចបានតាមបំណង ហើយជូនពរអូនសុខភាពល្អ សប្បាយចិត្តរៀងរាល់ថ្ងៃ និងស្រឡាញ់បងអោយច្រើនៗជាងនេះទៀត។\n\nI love you — ${fromName}`);
+
+    let typerHandle;
+    function typeText(txt) {
+      clearInterval(typerHandle);
+      typeBox.textContent = '';
+      let i = 0;
+      typerHandle = setInterval(() => {
+        typeBox.textContent += txt[i] || '';
+        i++;
+        if (i > txt.length) clearInterval(typerHandle);
+      }, 30);
+    }
+
+    openBtn.addEventListener('click', () => { modal.classList.add('open'); typeText(story); confettiBurst(220); });
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+    againBtn.addEventListener('click', () => typeText(story));
+
+    // -------- Music toggle --------
+    const musicBtn = document.getElementById('musicBtn');
+    const song = document.getElementById('song');
+    musicBtn.addEventListener('click', async () => {
+      try {
+        if (song.paused) { await song.play(); musicBtn.textContent = 'Music ⏸️'; musicBtn.setAttribute('aria-pressed', 'true'); }
+        else { song.pause(); musicBtn.textContent = 'Music ▶️'; musicBtn.setAttribute('aria-pressed', 'false'); }
+      } catch (e) { alert('Add an audio source first: open the HTML and set <audio> src to your mp3.'); }
+    });
+
+    // -------- Live edit (press E) --------
+    let editMode = false;
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'e') {
+        editMode = !editMode;
+        ['herName', 'intro', 'note'].forEach(id => {
+          const el = document.getElementById(id);
+          if (editMode) { el.setAttribute('contenteditable', 'true'); el.style.outline = '2px dashed #ffffff55'; }
+          else { el.removeAttribute('contenteditable'); el.style.outline = 'none'; }
+        });
+      }
+    });
+
+    // -------- Click confetti anywhere --------
+    document.addEventListener('click', (e) => { if (!modal.contains(e.target)) confettiBurst(80); }, false);
+    document.getElementById('confettiBtn').addEventListener('click', () => confettiBurst(160));
+
+    // -------- Confetti implementation --------
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = []; function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    addEventListener('resize', resize); resize();
+
+    function confettiBurst(n = 120) {
+      for (let i = 0; i < n; i++) {
+        particles.push({
+          x: Math.random() * W,
+          y: Math.random() * -40,
+          r: 3 + Math.random() * 4,
+          a: Math.random() * Math.PI * 2,
+          v: 2 + Math.random() * 4,
+          w: -0.05 + Math.random() * 0.1,
+          c: `hsl(${Math.floor(Math.random() * 360)} 90% 60%)`
+        });
+      }
+    }
+
+    function confettiLoop() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach((p) => {
+        p.y += p.v; p.a += p.w; p.x += Math.sin(p.a) * 1.2;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
+        ctx.fillStyle = p.c; ctx.fillRect(-p.r, -p.r, p.r * 2, p.r * 2);
+        ctx.restore();
+      });
+      particles = particles.filter(p => p.y < H + 20);
+      requestAnimationFrame(confettiLoop);
+    }
+    confettiLoop();
+
+    // -------- Floating hearts --------
+    const hearts = document.getElementById('hearts');
+    function spawnHeart() {
+      const h = document.createElement('div');
+      const size = 12 + Math.random() * 26;
+      h.innerHTML = '❤';
+      h.style.cssText = `position:absolute;left:${Math.random() * 100}vw;top:100vh;font-size:${size}px;opacity:.85;filter:drop-shadow(0 0 6px #ff6ec7);`;
+      hearts.appendChild(h);
+      const duration = 6000 + Math.random() * 5000;
+      const start = performance.now();
+      function anim(t) {
+        const p = Math.min(1, (t - start) / duration);
+        const y = 100 - p * 110; const x = parseFloat(h.style.left) + Math.sin(p * 6) * 1.5;
+        h.style.top = y + "vh"; h.style.left = x + "vw"; h.style.opacity = (1 - p).toFixed(2);
+        if (p < 1) requestAnimationFrame(anim); else h.remove();
+      }
+      requestAnimationFrame(anim);
+    }
+    setInterval(spawnHeart, 700);
+  </script>
+</body>
+
+</html>
